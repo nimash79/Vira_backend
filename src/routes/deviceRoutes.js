@@ -1,5 +1,7 @@
 const express = require("express");
 
+const { changeZoneStates } = require("../controllers/deviceController");
+
 const router = express.Router();
 
 router.get("/download", async (req, res) => {
@@ -10,6 +12,16 @@ router.get("/download", async (req, res) => {
   res.setHeader("Content-Length", bytes.length);
 
   res.status(200).send(bytes);
+});
+
+router.post("/change-zone-states", async (req, res) => {
+  try {
+    const { deviceId, zone_states } = req.body;
+    await changeZoneStates({ deviceId, zone_states });
+    res.sendResponse({ status: 1 });
+  } catch (err) {
+    res.sendError(err);
+  }
 });
 
 module.exports = router;
