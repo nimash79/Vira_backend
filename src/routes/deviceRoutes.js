@@ -1,6 +1,9 @@
 const express = require("express");
 
-const { changeZoneStates } = require("../controllers/deviceController");
+const {
+  changeZoneStates,
+  getZoneStates,
+} = require("../controllers/deviceController");
 
 const router = express.Router();
 
@@ -19,6 +22,16 @@ router.post("/change-zone-states", async (req, res) => {
     const { deviceId, zone_states } = req.body;
     await changeZoneStates({ deviceId, zone_states });
     res.sendResponse({ status: 1 });
+  } catch (err) {
+    res.sendError(err);
+  }
+});
+
+router.get("/zone-states/:deviceId", async (req, res) => {
+  try {
+    const { deviceId } = req.params;
+    const zone_states = await getZoneStates({ deviceId });
+    res.sendResponse({ status: 1, zone_states });
   } catch (err) {
     res.sendError(err);
   }

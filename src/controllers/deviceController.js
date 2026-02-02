@@ -119,3 +119,8 @@ exports.deleteDevices = async ({ deviceIds }) => {
 exports.changeZoneStates = async ({ deviceId, zone_states }) => {
   await Device.updateOne({ deviceId }, { $set: { zone_states } });
 };
+
+exports.getZoneStates = async ({ deviceId }) => {
+  const device = await this.getDevice({deviceId});
+  return device.zone_states;
+};
